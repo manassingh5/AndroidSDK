@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Selected Contacts -->
+    <TextView
+        android:id="@+id/tvContactsSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected Contacts: 0"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:padding="8dp"/>
+
+    <!-- Message Options Layout -->
+    <!--Button
+        android:id="@+id/btnSelectContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Contacts" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center">
+
+        <!-- WhatsApp Button -->
+        <Button
+            android:id="@+id/btnWhatsApp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="WhatsApp"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"
+            android:drawableLeft="@drawable/ic_whatsapp"/>
+
+        <!-- Text Button -->
+        <Button
+            android:id="@+id/btnText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Text"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_sms"/>
+    </LinearLayout>
+
+    <!-- Template RadioGroup -->
+    <RadioGroup
+        android:id="@+id/radioGroupTemplates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone">
+
+        <RadioButton
+            android:id="@+id/rbTemplate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Template" />
+    </RadioGroup>
+
+    <!-- Template Spinner -->
+    <Spinner
+        android:id="@+id/spinnerTemplates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
+
+    <!-- Message Input -->
+    <EditText
+        android:id="@+id/et_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        android:gravity="top|start"
+        android:hint="Write your message..."
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:maxLength="160"/>
+
+    <!-- Character Count TextView -->
+    <TextView
+        android:id="@+id/char_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="160 characters left"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Send, Reset, and Schedule Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <!-- Send Button -->
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Send"
+            android:drawableLeft="@android:drawable/ic_menu_send"
+            android:background="@color/button_color"
+            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Reset Button -->
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reset"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="@color/button_color"
+            android:textColor="@android:color/white"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSendTemplate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextMessage"
+        android:layout_marginTop="16dp"
+        android:text="Send Template Message" />
+
+    <!-- Schedule Button -->
+    <Button
+        android:id="@+id/btnSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Schedule Message"
+        android:layout_marginTop="16dp"
+        android:background="@color/button_color"
+        android:textColor="@android:color/white"
+        android:padding="10dp"/>
+
+</LinearLayout>
