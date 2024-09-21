@@ -14,20 +14,24 @@ public class ContactViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isSelectAll = new MutableLiveData<>(false);
 */
    // A HashMap to store contact positions and their selected states
-   private final MutableLiveData<HashMap<Integer, Boolean>> selectedContacts = new MutableLiveData<>(new HashMap<>());
+   private MutableLiveData<HashMap<Integer, Boolean>> selectedContacts = new MutableLiveData<>(new HashMap<>());
 
     // To get the state of selected contacts
     public LiveData<HashMap<Integer, Boolean>> getSelectedContacts() {
         return selectedContacts;
     }
+    public HashMap<Integer, Boolean> currentSelections = selectedContacts.getValue();
 
-    /*public LiveData<List<Contact>> getSelectedContacts() {
-        return selectedContacts;
+    // Get the current selection state for a specific contact
+
+    public Boolean isContactSelected(int position) {
+        if (currentSelections != null) {
+            return currentSelections.get(position);
+        }
+        return false; // Default is unselected
     }
-*/
     // Select or deselect all contacts
     public void selectAllContacts(boolean isSelected, int totalContacts) {
-        HashMap<Integer, Boolean> currentSelections = selectedContacts.getValue();
         if (currentSelections != null) {
             for (int i = 0; i < totalContacts; i++) {
                 currentSelections.put(i, isSelected);
@@ -38,7 +42,6 @@ public class ContactViewModel extends ViewModel {
 
     // Update contact selection state
     public void setContactSelected(int position, boolean isSelected) {
-        HashMap<Integer, Boolean> currentSelections = selectedContacts.getValue();
         if (currentSelections != null) {
             currentSelections.put(position, isSelected);
             selectedContacts.setValue(currentSelections);  // Update LiveData
@@ -51,22 +54,10 @@ public class ContactViewModel extends ViewModel {
             selectedContacts.setValue(selectedContacts.getValue());
         }
     }
-    /*public void setSelectedContacts(List<Contact> contacts) {
-        selectedContacts.setValue(contacts);
-    }*/
 
-   /* public LiveData<Boolean> getIsSelectAll() {
-        return isSelectAll;
-    }*/
-
-/*    public void setIsSelectAll(boolean selectAll) {
-        isSelectAll.setValue(selectAll);
-    }*/
-// Get a count of selected contacts
-public int getSelectedContactsCount() {
-    HashMap<Integer, Boolean> currentSelections = selectedContacts.getValue();
+     // Get a count of selected contacts
+    public int getSelectedContactsCount() {
     if (currentSelections == null) return 0;
-
     int count = 0;
     for (boolean isSelected : currentSelections.values()) {
         if (isSelected) {

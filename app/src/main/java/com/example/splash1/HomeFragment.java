@@ -1,6 +1,10 @@
 package com.example.splash1;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.getIntent;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +45,9 @@ public class HomeFragment extends Fragment {
         Button btnSendMessage = view.findViewById(R.id.btn_send_message);
 
         // Retrieve the username from arguments
-        String username = getArguments() != null ? getArguments().getString(USERNAME_KEY) : "User";
+    //   String username = getArguments() != null ? getArguments().getString(USERNAME_KEY) : "User";
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "User");
         welcomeMessage.setText("Welcome, " + username + "!");
 
 //        btnStartStepper.setOnClickListener(v -> openStepperFragment());

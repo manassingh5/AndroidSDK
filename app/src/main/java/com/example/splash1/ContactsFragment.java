@@ -23,6 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,18 +100,21 @@ public class ContactsFragment extends Fragment {
                 return true;
             }
         });
+
         // Handle "Next" button click to move to MyChatFragment
-       /* nextButton.setOnClickListener(v -> {
-            NavHostFragment.findNavController(MyContactFragment.this)
-                    .navigate(R.id.action_myContactFragment_to_myChatFragment);
-        });*/
-        nxtBtn.setOnClickListener(v -> openMyChatFragment());
+        nxtBtn.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_contactFragment_to_myChatFragment);
+          /*  NavHostFragment.findNavController(ContactsFragment.this)
+                    .navigate(R.id.action_contactFragment_to_myChatFragment);*/
+        });
+      //  nxtBtn.setOnClickListener(v -> openMyChatFragment());
         
         return view;
     }
 
     private void openMyChatFragment() {
-        Intent intent = new Intent(getActivity(), MyChatsFragment.class);
+        Intent intent = new Intent(getContext(), MyChatsFragment.class);
         startActivity(intent);
     }
 

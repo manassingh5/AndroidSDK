@@ -48,4 +48,5 @@
         android:text="Go to MyChat"
         android:layout_marginTop="16dp"/>
 
+
 </LinearLayout>
