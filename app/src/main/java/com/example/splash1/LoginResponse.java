@@ -3,8 +3,14 @@ package com.example.splash1;
 public class LoginResponse {
 
     private String userId;
-    private String token;
+
     private String message;
+    private Integer status;
+
+    public Integer getStatusCode() {
+        return status;
+    }
+
 
     // Getters and Setters
 
@@ -14,14 +20,6 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getUserId() {

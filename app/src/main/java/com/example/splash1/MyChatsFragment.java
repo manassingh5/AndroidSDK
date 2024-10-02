@@ -1,6 +1,9 @@
 package com.example.splash1;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -56,19 +59,20 @@ public class MyChatsFragment extends Fragment {
     private RadioButton rbTemplate;
     private Button btnSend;
     private Button btnReset;
-    private Button btnSchedule;
+    private Button btnSchedule ,btnSelectContacts;
     private Button buttonSendTemplate;
     private ApiService apiService;
 
-
-//    private Button btnSelectContacts; // New button for contact selection
-
+    //  private String userId = "34";
+    String userId = "65718a4f-18d5-46e2-92c2-057bc538d6a7";
+    String channelIds ="2";
+    Integer templateId =0;
 
     private SmsManager smsManager;
     private static final int SMS_PERMISSION_CODE = 2;
     private static final int READ_CONTACTS_PERMISSION_CODE = 3;
-    private  List<Contact> contactList =new ArrayList<>();
 
+    // private SharedPreferencesHelper sharedPreferenceHelper;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,30 +91,28 @@ public class MyChatsFragment extends Fragment {
         btnSend = view.findViewById(R.id.btnSend);
         btnReset = view.findViewById(R.id.btnReset);
         btnSchedule = view.findViewById(R.id.btnSchedule);
-        buttonSendTemplate = view.findViewById(R.id.buttonSendTemplate);
-    //    btnSelectContacts = view.findViewById(R.id.btnSelectContacts); // Initialize the new button
+        btnSelectContacts =view.findViewById(R.id.btnSelectContacts);
+
+        // Shared Preferences used to get userId
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "User");
+
 
         // Request permissions
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
         }
+
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
         }
-
-         apiService = RetrofitClient.getClient().create(ApiService.class);
+        apiService = RetrofitClient.getClient().create(ApiService.class);
         // Initialize ViewModel same as ContactsFragment
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
 
-        contactViewModel.getSelectedContacts().observe(getViewLifecycleOwner(), selectedContacts -> {
-            int selectedCount = contactViewModel.getSelectedContactsCount();
-            selectedContactCounter.setText("Selected Contacts: " + selectedCount);
+        contactViewModel.getSelectedCount().observe(getViewLifecycleOwner(), count -> {
+            selectedContactCounter.setText("Selected Contacts: " + count);
         });
-
-        // Observe the selected contacts list and update the counter
-        /*contactViewModel.getSelectedContacts().observe(getViewLifecycleOwner(), selectedContacts -> {
-            selectedContactCounter.setText("Selected Contacts: " + selectedContacts.size());
-        });*/
 
         // Set initial character count
         updateCharCount(MAX_CHAR_LIMIT);
@@ -121,11 +123,13 @@ public class MyChatsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTemplates.setAdapter(adapter);
 
-        buttonSendTemplate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendTemplateMessage();
-            }
+        //select contact button to go back to MyContact
+        btnSelectContacts.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new ContactsFragment()); // Replace with ContactFragment
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
         // Handle button selections
@@ -144,12 +148,15 @@ public class MyChatsFragment extends Fragment {
         });
 
         btnSend.setOnClickListener(v -> {
-            contactList = getSelectedContactsFromViewModel();
-       // contactList = contactViewModel.getSelectedContacts().getValue();
+
             String message = messageInput.getText().toString();
-            if (contactList != null && !contactList.isEmpty()) {
-                sendSmsToMultipleContacts(contactList, message);
-            }
+            contactViewModel.getSelectedContact().observe(getViewLifecycleOwner(), contacts -> {
+                // Use the selected contacts to send SMS
+                if (contacts != null && !contacts.isEmpty()) {
+                    //  printContactNumbers(contacts);
+                    sendMessage(userId, contacts, channelIds, templateId, message);  // Pass parameters to API
+                }
+            });
         });
 
         btnReset.setOnClickListener(v -> {
@@ -157,22 +164,14 @@ public class MyChatsFragment extends Fragment {
             updateCharCount(MAX_CHAR_LIMIT);
         });
 
-        btnSchedule.setOnClickListener(v -> {
+       /* btnSchedule.setOnClickListener(v -> {
             FragmentManager fragmentManager = getParentFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new ScheduleMessageFragment());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        });
+        });*/
 
-       /* btnSelectContacts.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, new ContactsFragment()); // Replace with ContactFragment
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        });
-*/
         // Handle spinner selection
         spinnerTemplates.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -189,42 +188,57 @@ public class MyChatsFragment extends Fragment {
         return view;
     }
 
-    private void sendTemplateMessage() {
-        contactList = getSelectedContactsFromViewModel();
-        if (contactList.isEmpty()) {
-            Log.e("", "Phone number is empty.");
-            List<Contact> contactList = new ArrayList<>();
-            contactList.add(new Contact("+1234567890", "Hello, this is a test message!"));
-            contactList.add(new Contact("+0987654321", "Another test message!"));
+    private void saveMessage() {
+    }
 
-// Create the request body
-           /* ContactRequest contactRequest = new ContactRequest(contactList);
-            TemplateMessageRequest templateMessageRequest = new TemplateMessageRequest(contactList);
+    private void sendMessage(String userId ,List<Contact> contactList, String channelIds, Integer templateId, String message) {
 
-            Call<ResponseBody> call = apiService.sendTemplateMessage(templateMessageRequest);
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        // Handle success
-                        Log.d("API", "Contacts sent successfully");
-                    } else {
-                        // Handle failure
-                        Log.e("API", "Failed to send contacts");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    // Handle error
-                    Log.e("API", "Error occurred: " + t.getMessage());
-                }
-            });*/
+        List<Contact> contacts = new ArrayList<>();
+        for (Contact contact : contactList) {
+            contacts.add(new Contact(contact.getName(),contact.getNumber()));
+            Log.d("ContactNumbers", "Contact Name: " + contact.getName() + ", Phone Number: " + contact.getNumber());
         }
+
+        SendMessageRequest messageRequest = new SendMessageRequest(userId,contacts, channelIds, templateId, message);
+
+        Call<Void> call = apiService.sendMessage(messageRequest);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("messageResponse", "Message : " + response.message());
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Failed to send message.", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("Retrofit", "Error: " + t.getMessage());
+            }
+        });
     }
 
 
+    private void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /*private void sendTemplateMessage() {
+        contactList = getSelectedContactsFromViewModel();
+        if (contactList.isEmpty()) {
+            Log.e("", "Phone number is empty.");
+
+            // Create the request body
+            for (Contact contact : contactList) {
+                // Get phone number
+                String phoneNumber = contact.getPhoneNumber();
+            }
+        }
+    }
 
     private List<Contact> getSelectedContactsFromViewModel() {
         List<Contact> selectedContacts = new ArrayList<>();
@@ -238,22 +252,23 @@ public class MyChatsFragment extends Fragment {
             }
         }
         return selectedContacts;
-    }
+    }*/
 
     private void sendSmsToMultipleContacts(List<Contact> phoneNumbers, String message) {
         smsManager = SmsManager.getDefault();
         /*for (String phoneNumber : phoneNumbers) {*/
         for (Contact contact : phoneNumbers) {
-          //  phoneNumber = phoneNumber.trim(); // Remove any leading/trailing spaces
+            //  phoneNumber = phoneNumber.trim(); // Remove any leading/trailing spaces
             try {
-                smsManager.sendTextMessage(contact.getPhoneNumber(), null, message, null, null);
-                Toast.makeText(getContext(), "SMS Sent to " + contact.getPhoneNumber(), Toast.LENGTH_SHORT).show();
+                smsManager.sendTextMessage(contact.getNumber(), null, message, null, null);
+                Toast.makeText(getContext(), "SMS Sent to " + contact.getNumber(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Toast.makeText(getContext(), "Failed to send SMS to " + contact.getPhoneNumber(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to send SMS to " + contact.getNumber(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
     }
+
 
   /*  private void setSelectedContacts(String contacts) {
         selectedContacts.setText("Selected Contacts: " + contacts);

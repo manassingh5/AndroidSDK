@@ -1,7 +1,5 @@
 package com.example.splash1;
 
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.regex.Matcher;
@@ -28,7 +27,8 @@ public class SignupActivity extends AppCompatActivity {
     private TextView tvLoginPrompt;
     private ApiService apiService;
     private RadioGroup genderRadioGroup;
-    int gender = 0;
+    private Integer gender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +48,17 @@ public class SignupActivity extends AppCompatActivity {
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-
-        int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
-       // int gender = 0; // Default or no selection
-        if (selectedGenderId == R.id.radioMale) {
-            gender = 1; // Male selected
-        } else if (selectedGenderId == R.id.radioFemale) {
-            gender = 2; // Female selected
-        }
-
         btnSignup.setOnClickListener(v -> {
+            // Get the selected gender each time the signup button is clicked
+            int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+            if (selectedGenderId == R.id.radioMale) {
+                gender = 1; // Male selected
+            } else if (selectedGenderId == R.id.radioFemale) {
+                gender = 2; // Female selected
+            } else {
+                gender = null; // No gender selected
+            }
+
             if (validateInputs()) {
                 registerUser();
             }
@@ -76,12 +77,15 @@ public class SignupActivity extends AppCompatActivity {
         String lastName = etLastName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
-        Integer genderId =gender;
+        Integer genderId = gender;
         String company = etCompany.getText().toString().trim();
 
-        if (!isValidUserName(userName)) {
+        if (genderId == null) {
+            Toast.makeText(this, "Please select a gender.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (!isValidUserName(userName)) return;
         if (!isValidFirstName(firstName)) {
             Toast.makeText(this, "Invalid First Name", Toast.LENGTH_SHORT).show();
             return;
@@ -111,16 +115,12 @@ public class SignupActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     RegisterResponse registerResponse = response.body();
                     String userId = registerResponse.getUserId();
-                        String message = registerResponse.getMessage();
-                        Toast.makeText(SignupActivity.this, "UserID: " + userId + ", Message: " + message, Toast.LENGTH_LONG).show();
-                        // Registration successful, handle response if needed
-                         Toast.makeText(SignupActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    /* else {
-                        showError("Registration failed. Please try again.");
-                    }*/
+                    String message = registerResponse.getMessage();
+                    Toast.makeText(SignupActivity.this, "UserID: " + userId + ", Message: " + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, "Registration Successful", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     showError("Registration failed. Please try again.");
                 }
@@ -179,7 +179,6 @@ public class SignupActivity extends AppCompatActivity {
                 TextUtils.isEmpty(etEmail.getText().toString()) ||
                 TextUtils.isEmpty(etPhone.getText().toString()) ||
                 TextUtils.isEmpty(etCompany.getText().toString())) {
-
             Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             return false;
         }

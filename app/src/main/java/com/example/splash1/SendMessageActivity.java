@@ -38,11 +38,11 @@ public class SendMessageActivity extends AppCompatActivity {
                 return;
             }
 
-            sendMessage(phoneNumber, message);
+      //      sendMessage(phoneNumber, message);
         });
     }
 
-    private void sendMessage(String phoneNumber, String message) {
+    /*private void sendMessage(String phoneNumber, String message) {
         MessageRequest messageRequest = new MessageRequest(phoneNumber, message);
 
         apiService.sendMessage(messageRequest).enqueue(new Callback<MessageResponse>() {
@@ -60,5 +60,5 @@ public class SendMessageActivity extends AppCompatActivity {
                 Toast.makeText(SendMessageActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 }

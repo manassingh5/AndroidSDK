@@ -1,9 +1,7 @@
 package com.example.splash1;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -21,12 +19,12 @@ import java.util.List;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactViewHolder> {
 
     private List<Contact> contactsList; // List of contacts fetched from the phone
-    private ContactViewModel contactViewModel;
-    private HashMap<Integer, Boolean> checkedStates = new HashMap<>();
+    private OnContactSelectListener onContactSelectListener;
+    private boolean isSelectAllMode = false; // Flag to disable individual check updates in select-all mode
 
-   public ContactsAdapter(List<Contact> contactsList, ContactViewModel contactViewModel) {
+    public ContactsAdapter(List<Contact> contactsList, OnContactSelectListener onContactSelectListener) {
         this.contactsList = contactsList;
-       this.contactViewModel = contactViewModel;
+        this.onContactSelectListener = onContactSelectListener;
     }
 
     @NonNull
@@ -40,82 +38,38 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Contact contact = contactsList.get(position);
         holder.contactName.setText(contact.getName());
-        holder.contactPhone.setText(contact.getPhoneNumber());
-
-        // Get the current selection state from ViewModel for the contact at this position
-        Boolean isSelected = contactViewModel.isContactSelected(position);
-        // Remove the listener temporarily to avoid triggering it when updating the checked state
+        holder.contactPhone.setText(contact.getNumber());
+        // Temporarily disable listener during binding to avoid incorrect counter updates
         holder.contactCheckBox.setOnCheckedChangeListener(null);
-        // Set the checkbox state based on the selected status
-        if (isSelected != null) {
-            holder.contactCheckBox.setChecked(isSelected);
-        } else {
-            holder.contactCheckBox.setChecked(false); // Default unchecked if not found
-        }
+        holder.contactCheckBox.setChecked(contact.isSelected());
 
-        // Re-attach listener to update the selection state when user interacts
+        // Handle individual contact selection
         holder.contactCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // When checkbox is checked/unchecked, update the ViewModel with the new state
-            contactViewModel.setContactSelected(position, isChecked);
+            if (!isSelectAllMode) {
+                contact.setSelected(isChecked);
+                onContactSelectListener.onContactSelected(contact ,isChecked);
+            }
         });
     }
-
-
-       /*
-
-      //  holder.contactCheckBox.setChecked(contact.isSelected());
-        // Observe the selected contacts from contactViewModel
-        contactViewModel.getSelectedContacts().observe((LifecycleOwner) holder.itemView.getContext(), selectedContacts -> {
-            Boolean isChecked = selectedContacts.get(position);
-            holder.contactCheckBox.setChecked(isChecked != null && isChecked);
-        });
-
-        // Update selected state in ViewModel when checkbox changes
-        holder.contactCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            contactViewModel.setContactSelected(position, isChecked);
-            /*contact.setSelected(isChecked);
-            if (isChecked) {
-                contactViewModel.setContactSelected(position, isChecked);
-            } else {
-                contactViewModel.clearSelectedContacts();
-            }
-        });
-      //  holder.bind(contact, contactViewModel);
-
-
-    }*/
-
- /*   @Override
-    public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        Contact contact = contactsList.get(position);
-        holder.contactName.setText(contact.getName());
-        holder.contactPhone.setText(contact.getPhoneNumber());
-
-        holder.itemView.setOnClickListener(v -> {
-            String phoneNumber = contact.getPhoneNumber();
-            if (selectedContacts.contains(contact.getPhoneNumber())) {
-                selectedContacts.remove(phoneNumber);
-                v.setBackgroundColor(Color.WHITE); // Unselect
-            } else {
-                selectedContacts.add(phoneNumber);
-                v.setBackgroundColor(Color.LTGRAY); // Select
-            }
-          //  updateCounter();
-        });
-    }*/
 
     @Override
     public int getItemCount() {
         return contactsList.size();
     }
 
-    /*private void updateCounter() {
-        counterTextView.setText("Selected: " + selectedContacts.size());
-    }*/
+    public void selectAll(boolean isSelected) {
+        isSelectAllMode = true; // Disable individual checkbox handling
+        for (Contact contact : contactsList) {
+            contact.setSelected(isSelected);
+        }
+        notifyDataSetChanged();
+        isSelectAllMode = false; // Re-enable after updating
+    }
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder {
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactName, contactPhone;
         private CheckBox contactCheckBox;
+
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,35 +77,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             contactPhone = itemView.findViewById(R.id.contactPhoneNumber);
             contactCheckBox = itemView.findViewById(R.id.contactCheckBox);
         }
-
-      /*  public void bind(Contact contact, ContactViewModel contactViewModel) {
-            contactName.setText(contact.getName());
-            contactPhone.setText(contact.getPhoneNumber());
-            contactViewModel.getSelectedContacts().observe((LifecycleOwner) itemView.getContext(), selectedContacts -> {
-              //  contactCheckBox.setChecked(contact.isSelected());
-                contactCheckBox.setChecked(selectedContacts.contains(contact));
-            });
-
-            contactCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-               // contact.setSelected(isChecked);
-                List<Contact> selectedContacts = new ArrayList<>(contactViewModel.getSelectedContacts().getValue());
-                if (isChecked) {
-                    selectedContacts.add(contact);
-                } else {
-                    selectedContacts.remove(contact);
-                }
-                contactViewModel.setSelectedContacts(selectedContacts);
-            });
-
-            contactViewModel.getIsSelectAll().observe((LifecycleOwner) itemView.getContext(), isSelectAll -> {
-                if (isSelectAll) {
-                    contactCheckBox.setChecked(true);
-                }
-            });
-        }*/
     }
 
-    public void filter(String text) {
+    public interface OnContactSelectListener {
+        void onContactSelected(Contact contact,boolean isSelected);
+    }
+
+    /*public void filter(String text) {
         List<Contact> filteredList = new ArrayList<>();
 
         if (text == null || text.isEmpty()) {
@@ -171,5 +103,5 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         contactsList.clear();
         contactsList.addAll(filteredList);
         notifyDataSetChanged(); // Refresh RecyclerView
-    }
+    }*/
 }

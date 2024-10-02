@@ -17,11 +17,11 @@
         android:padding="8dp"/>
 
     <!-- Message Options Layout -->
-    <!--Button
+    <Button
         android:id="@+id/btnSelectContacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Contacts" />-->
+        android:text="Select Contacts"/>
 
     <LinearLayout
         android:layout_width="match_parent"
