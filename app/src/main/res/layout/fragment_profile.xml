@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_profile"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_shape"/>
+
+        <Button
+            android:id="@+id/btnChangePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Picture"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <!-- User Details -->
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Gender"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etCompany"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Company"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Country"
+            android:enabled="false" />
+
+        <!-- New Fields -->
+        <EditText
+            android:id="@+id/etChannelId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Channel ID"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etPlanId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Plan ID"
+            android:enabled="false" />
+
+        <EditText
+            android:id="@+id/etPreferenceChannelId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Preference Channel ID"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/btnEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

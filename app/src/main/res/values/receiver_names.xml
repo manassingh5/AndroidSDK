@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="receiver_names">
+        <item>Channel 1</item>
+        <item>Channel 2</item>
+        <item>Channel 3</item>
+    </string-array>
+</resources>

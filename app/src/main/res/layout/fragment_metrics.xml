@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Custom Pie Chart 1 -->
+    <com.example.splash.CustomPieChartView
+        android:id="@+id/custom_pie_chart_1"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Custom Pie Chart 2 -->
+    <com.example.splash.CustomPieChartView
+        android:id="@+id/custom_pie_chart_2"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/custom_pie_chart_1"
+        android:layout_marginStart="8dp"/>
+
+    <!-- Log Table -->
+    <TableLayout
+        android:id="@+id/table_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/custom_pie_chart_2"
+        android:layout_marginTop="16dp"
+        android:stretchColumns="1"
+        android:background="@android:color/white"
+        android:padding="8dp"
+        android:elevation="4dp">
+
+        <TableRow
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="From"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="To"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Type"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Date Time"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Status Type"
+                android:textStyle="bold"/>
+        </TableRow>
+
+        <!-- Example Log Entry -->
+        <!-- Add rows dynamically in your Java code -->
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="John Doe"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Jane Doe"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SMS"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2024-08-08 10:00 AM"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Incoming"/>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>
