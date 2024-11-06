@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="?attr/colorSurface"
+        android:elevation="4dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Profile Picture in a Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_profile"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnChangePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Change Picture"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+        <!-- User Details with Editable Icons -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="First Name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Last Name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Phone Number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Company Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Company">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:enabled="false"
+                android:drawableEnd="@drawable/ic_edit"
+                android:drawableTint="?attr/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Gender Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorOnSurface" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textColor="?attr/colorOnSurface" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:textColor="?attr/colorOnSurface" />
+        </RadioGroup>
+
+        <!-- Channel IDs (CheckBoxes in Rows) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Channel IDs"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- First Row of Checkboxes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxChannelId1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="SMS"
+                android:textColor="?attr/colorOnSurface"
+                android:drawableStart="@drawable/ic_sms"
+                android:layout_weight="1" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxChannelId2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Twilio"
+                android:textColor="?attr/colorOnSurface"
+                android:drawableStart="@drawable/ic_twilio"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- Second Row of Checkboxes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxChannelId3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="WhatsApp"
+                android:textColor="?attr/colorOnSurface"
+                android:drawableStart="@drawable/ic_whatsapp"
+                android:layout_weight="1" />
+
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxChannelId4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Instagram"
+                android:textColor="?attr/colorOnSurface"
+                android:drawableStart="@drawable/ic_instagram"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- Third Row of Checkboxes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkboxChannelId5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Facebook"
+                android:textColor="?attr/colorOnSurface"
+                android:drawableStart="@drawable/ic_facebook"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- Preference Channel (Radio Buttons in Rows) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preference Channel"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- RadioGroup for Preference Channel -->
+        <RadioGroup
+            android:id="@+id/radioGroupPreferenceChannel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- First Row of Radio Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPreferenceChannelId1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="SMS"
+                    android:textColor="?attr/colorOnSurface"
+                    android:drawableStart="@drawable/ic_sms"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPreferenceChannelId2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Twilio"
+                    android:textColor="?attr/colorOnSurface"
+                    android:drawableStart="@drawable/ic_twilio"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- Second Row of Radio Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPreferenceChannelId3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="WhatsApp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:drawableStart="@drawable/ic_whatsapp"
+                    android:layout_weight="1" />
+
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPreferenceChannelId4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instagram"
+                    android:textColor="?attr/colorOnSurface"
+                    android:drawableStart="@drawable/ic_instagram"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <!-- Third Row of Radio Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPreferenceChannelId5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Facebook"
+                    android:textColor="?attr/colorOnSurface"
+                    android:drawableStart="@drawable/ic_facebook"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </RadioGroup>
+
+        <!-- Plan Selection (4 Radio Buttons in 2 Rows) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plan"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- RadioGroup for Plan -->
+        <RadioGroup
+            android:id="@+id/radioGroupPlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- First Row of Plan Radio Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioFree"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Free"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioBasic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Basic"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- Second Row of Plan Radio Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioStandard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Standard"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPremium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Premium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </RadioGroup>
+
+
+        <!-- Save and Edit Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:layout_marginEnd="8dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

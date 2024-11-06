@@ -1,6 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Display selected contacts -->
+        <TextView
+            android:id="@+id/tvContactsSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Contacts Selected"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:textColor="@color/primary_text_color" />
+
+        <!-- Button to select contacts -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSelectContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Contacts"
+            app:cornerRadius="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_contacts"
+            app:iconGravity="textStart" />
+
+        <!-- WhatsApp and SMS checkboxes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:gravity="start|center_vertical">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkboxWhatsApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WhatsApp"
+                android:textColor="@color/primary_text_color"
+                android:drawableLeft="@drawable/ic_whatsapp"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkboxTwilio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Twilio"
+                android:textColor="@color/primary_text_color"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp" />
+
+        </LinearLayout>
+
+
+        <!-- Spinner for selecting template type -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Template Type"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/primary_text_color" />
+
+                <!-- Spinner for selecting the template type -->
+                <Spinner
+                    android:id="@+id/spinnerTemplate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Message Text Area -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your message..."
+            app:counterEnabled="true"
+            app:counterMaxLength="160"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:maxLength="160" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Character Count Text -->
+        <TextView
+            android:id="@+id/char_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="160 characters left"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
+
+
+
+
+
+            <!-- Button to pick a date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date and Time" />
+
+            <Button
+                android:id="@+id/buttonPickDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Date" />
+
+            <!-- TextView to display the selected date and time -->
+            <TextView
+                android:id="@+id/textViewSelectedDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No date selected"
+                android:paddingTop="8dp" />
+
+            <!-- Add Event Button -->
+            <Button
+                android:id="@+id/buttonAddEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Event"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:textColor="#FFFFFF"/>
+
+        <!-- Scheduled Message Button -->
+        <Button
+            android:id="@+id/buttonScheduleMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scheduled Message"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:textColor="#FFFFFF" />
+
+
+    </LinearLayout>
+</ScrollView>
