@@ -54,13 +54,13 @@ public class MyChatsFragment extends Fragment {
     private Spinner spinnerTemplate;
     private MaterialButton btnSelectContacts, btnSend, btnReset, btnSchedule;
     private int maxMessageLength = 160;
-    private EditText messageInput;
     private TextView messageCount;
     private int currentMessageCount = 0;
     private ContactViewModel contactViewModel;
     private ApiService apiService;
     private SmsManager smsManager;
     private SharedPrefManager sharedPrefManager;
+    private String userId;
     StringBuilder channelIds = new StringBuilder();
     private HashMap<String, Integer> templateIdMap;
     private Integer templateId;
@@ -84,6 +84,11 @@ public class MyChatsFragment extends Fragment {
         requestPermissions();
         setupSpinner();
 
+       /* SharedPreferences sharedPreferences = getContext().getSharedPreferences("PREF_NAME", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "User");*/
+      //  String userId = sharedPreferences.getString("userId","0");
+
+
         return view;
     }
 
@@ -91,6 +96,7 @@ public class MyChatsFragment extends Fragment {
     private void initializeViews(View view) {
         tvContactsSelected = view.findViewById(R.id.tvContactsSelected);
         etMessage = view.findViewById(R.id.et_message);
+        messageCount = view.findViewById(R.id.message_count);
         checkboxWhatsApp = view.findViewById(R.id.checkboxWhatsApp);
         checkboxSMS = view.findViewById(R.id.checkboxSMS);
         checkboxTwilio = view.findViewById(R.id.checkboxTwilio);
@@ -112,14 +118,13 @@ public class MyChatsFragment extends Fragment {
             tvContactsSelected.setText("Selected Contacts: " + count);
         });
 
+        // Initialize SharedPrefManager and SharedPreferences
         sharedPrefManager = new SharedPrefManager(getActivity());
+        userId = sharedPrefManager.getUserId();
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "User");
-        String userId = sharedPreferences.getString("userId","0");
-        // Retrieve the message count from SharedPreferences
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         currentMessageCount = sharedPreferences.getInt("messageCount", 0);
-        messageCount.setText("Message Sent: " + currentMessageCount);
+     //   messageCount.setText("Messages Sent: " + currentMessageCount);
 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,7 +151,13 @@ public class MyChatsFragment extends Fragment {
 
             String message = etMessage.getText().toString();
           //  String userId = sharedPrefManager.getUserId();
-
+            if (message.isEmpty()) {
+                // Show error: Message cannot be empty
+                Toast.makeText(getContext(), "Please enter message", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Reset channelIds before appending
+            channelIds.setLength(0);
 
             // Check which checkboxes are selected and append their IDs to the StringBuilder
             if (checkboxSMS.isChecked()) {
@@ -163,6 +174,7 @@ public class MyChatsFragment extends Fragment {
             if (channelIds.length() > 0) {
                 channelIds.setLength(channelIds.length() - 1);
             }
+
 
             contactViewModel.getSelectedContact().observe(getViewLifecycleOwner(), contacts -> {
                 // Use the selected contacts to send SMS
@@ -216,19 +228,12 @@ public class MyChatsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedTemplate = (String) parent.getItemAtPosition(position);
-                 templateId = templateIdMap.get(selectedTemplate);
-
-                /*if (templateId != null) {
-                    // Set the template ID and message based on the selection
-                    etMessage.setText(" " + templateId);
-                } else {
-                    etMessage.setText(""); // Clear message for "Select Template"
-                }*/
+                templateId = templateIdMap.getOrDefault(selectedTemplate, 0); // Set to 0 if no valid template is selected
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                templateId = null; // Clear message when no item is selected
+                templateId = 0; // Clear message when no item is selected
             }
         });
     }
@@ -247,11 +252,8 @@ public class MyChatsFragment extends Fragment {
         boolean isSmsChecked = checkboxSMS.isChecked();
         boolean isTwilioChecked = checkboxTwilio.isChecked();
 
-        if (message.isEmpty()) {
-            // Show error: Message cannot be empty
-            Toast.makeText(getContext(), "Please enter message", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
+
 
         if (!isWhatsAppChecked && !isSmsChecked && !isTwilioChecked ) {
             // Show error: At least one channel must be selected
@@ -282,12 +284,12 @@ public class MyChatsFragment extends Fragment {
 
     private void sendMessageToWhatsAppAndTwilio(String userId ,List<Contact> contactList, String channelIds, Integer templateId, String message) {
         // WhatsApp API integration logic here
-       /* List<Contact> contacts = new ArrayList<>();
+        List<Contact> contacts = new ArrayList<>();
         for (Contact contact : contactList) {
             contacts.add(new Contact(contact.getName(),contact.getNumber()));
             Log.d("ContactNumbers", "Contact Name: " + contact.getName() + ", Phone Number: " + contact.getNumber());
         }
-*/
+
         SendMessageRequest messageRequest = new SendMessageRequest(userId, contactList, channelIds, templateId, message);
 
         Call<Void> call = apiService.sendMessage(messageRequest);
@@ -297,6 +299,8 @@ public class MyChatsFragment extends Fragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("messageResponse", "Message : " + response.message());
+                currentMessageCount = updateMessageCount(contacts.size());
+                updateMessageCountInAzure(userId, currentMessageCount);
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Message sent successfully!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -318,7 +322,7 @@ public class MyChatsFragment extends Fragment {
             messageCount.setText("Message Sent: " +currentMessageCount); // Update the UI
 
             // Save the updated message count to SharedPreferences
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("messageCount", currentMessageCount);
             editor.apply();

@@ -45,9 +45,9 @@ public interface ApiService {
     @POST("/api/auth/updatepreferences")
     Call<ApiResponse> updatePreferences(@Query("userid") String userId, @Body UserPreferenceRequest request);
 
-    @POST("message/updateMessageCount") //
+    @POST("/api/message/updateMessageCount") //
     Call<ResponseBody> updateMessageCount(@Body UpdateMessageCountRequest request);
 
-    @POST("message/GetMessageByUserId")
+    @POST("/api/message/GetMessageByUserId")
     Call<List<Message>> getMessagesByUserId(@Query("userId") String userId);
 }
