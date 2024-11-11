@@ -123,8 +123,17 @@ public class ContactsFragment extends Fragment {
             fragmentTransaction.commit();
         });
 
+
         return view;
-    }
+     }
+        @Override
+        public void onResume() {
+            super.onResume();
+            // Clear selected contacts when returning to ContactsFragment
+            contactViewModel.clearContacts();
+            resetSelection();
+        }
+
 
     private void filterContacts(String query) {
         filteredContactList.clear();  // Clear the current filtered list
@@ -145,12 +154,12 @@ public class ContactsFragment extends Fragment {
         contactAdapter.notifyDataSetChanged();
     }
 
-    @Override
+ /*   @Override
     public void onResume() {
         super.onResume();
         // Reset selected contacts and counter when returning to MyContactFragment
         resetSelection();
-    }
+    }*/
 
     // Method to reset contact selection and counter
     private void resetSelection() {
