@@ -164,6 +164,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fragment = new ContactsFragment();
         } else if (id == R.id.nav_my_chats) {
             fragment = new MyChatsFragment();
+        }else if (id == R.id.nav_send_otp) {
+            fragment = new OtpFragment();
         } else if (id == R.id.nav_subscriptions) {
             fragment = new SubscriptionsFragment();
         } else if (id == R.id.nav_metrics) {

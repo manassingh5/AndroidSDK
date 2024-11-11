@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
         sharedPrefManager = new SharedPrefManager(getActivity());
         String userId = sharedPrefManager.getUserId();
         fetchMessages(userId);
-        Log.d("UserID" , "user id =,"+userId);
+        Log.d("UserID" , "user id = "+userId);
         //updateMessageCount();
         return view;
     }

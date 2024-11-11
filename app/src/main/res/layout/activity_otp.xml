@@ -1,0 +1,177 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#f0f0f0">
+
+    <!-- Country Code, Name, and Phone Number Fields -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="16dp">
+
+        <!-- Country Code Spinner with More Width -->
+        <Spinner
+            android:id="@+id/spinner_country_code"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Contact Name with Adjusted Width -->
+        <EditText
+            android:id="@+id/et_contact_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            android:hint="Name"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Contact Number with Adjusted Width -->
+        <EditText
+            android:id="@+id/et_contact_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:hint="Phone Number"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Send Button -->
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- OTP Entry Boxes -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- OTP Digits -->
+        <EditText
+            android:id="@+id/otp_digit_1"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+
+        <EditText
+            android:id="@+id/otp_digit_2"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+
+        <EditText
+            android:id="@+id/otp_digit_3"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+
+        <EditText
+            android:id="@+id/otp_digit_4"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+
+        <EditText
+            android:id="@+id/otp_digit_5"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+
+        <EditText
+            android:id="@+id/otp_digit_6"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:hint="0"/>
+    </LinearLayout>
+
+    <!-- Verify Button -->
+    <Button
+        android:id="@+id/btn_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verify"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Resend Button with Timer -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend" />
+
+        <TextView
+            android:id="@+id/tv_resend_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="00:30"
+            android:textSize="16sp"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
+</LinearLayout>

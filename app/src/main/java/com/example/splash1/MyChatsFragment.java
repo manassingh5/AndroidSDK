@@ -52,7 +52,7 @@ public class MyChatsFragment extends Fragment {
     private EditText etMessage;
     private CheckBox checkboxWhatsApp, checkboxSMS, checkboxTwilio;
     private Spinner spinnerTemplate;
-    private MaterialButton btnSelectContacts, btnSend, btnReset, btnSchedule;
+    private MaterialButton btnSelectContacts, btnSend, btnReset;
     private int maxMessageLength = 160;
     private TextView messageCount;
     private int currentMessageCount = 0;
@@ -83,11 +83,6 @@ public class MyChatsFragment extends Fragment {
         setupListeners();
         requestPermissions();
         setupSpinner();
-
-       /* SharedPreferences sharedPreferences = getContext().getSharedPreferences("PREF_NAME", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "User");*/
-      //  String userId = sharedPreferences.getString("userId","0");
-
 
         return view;
     }
@@ -122,9 +117,10 @@ public class MyChatsFragment extends Fragment {
         sharedPrefManager = new SharedPrefManager(getActivity());
         userId = sharedPrefManager.getUserId();
 
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userId = sharedPreferences.getString("userId","0");
         currentMessageCount = sharedPreferences.getInt("messageCount", 0);
-     //   messageCount.setText("Messages Sent: " + currentMessageCount);
+        messageCount.setText("Messages Sent: " + currentMessageCount);
 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,7 +225,13 @@ public class MyChatsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedTemplate = (String) parent.getItemAtPosition(position);
                 templateId = templateIdMap.getOrDefault(selectedTemplate, 0); // Set to 0 if no valid template is selected
+                // Show message if "Custom Template" is selected
+                if ("Custom Template".equals(selectedTemplate)) {
+                    Toast.makeText(requireContext(), "Please contact admin for Custom Template", Toast.LENGTH_SHORT).show();
+                }
             }
+
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -237,7 +239,6 @@ public class MyChatsFragment extends Fragment {
             }
         });
     }
-
 
     private void sendMessage(String userId ,List<Contact> contactList, String channelIds, Integer templateId, String message) {
 
@@ -251,9 +252,6 @@ public class MyChatsFragment extends Fragment {
         boolean isWhatsAppChecked = checkboxWhatsApp.isChecked();
         boolean isSmsChecked = checkboxSMS.isChecked();
         boolean isTwilioChecked = checkboxTwilio.isChecked();
-
-
-
 
         if (!isWhatsAppChecked && !isSmsChecked && !isTwilioChecked ) {
             // Show error: At least one channel must be selected
@@ -322,7 +320,7 @@ public class MyChatsFragment extends Fragment {
             messageCount.setText("Message Sent: " +currentMessageCount); // Update the UI
 
             // Save the updated message count to SharedPreferences
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("messageCount", currentMessageCount);
             editor.apply();
@@ -357,8 +355,6 @@ public class MyChatsFragment extends Fragment {
                 }
             });
         }
-
-
 
     private void sendSms(String userId ,List<Contact> contactList, String channelIds, Integer templateId, String message) {
 

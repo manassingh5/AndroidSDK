@@ -145,7 +145,15 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp" />
 
-
+        <!-- TextView to display the message count -->
+        <TextView
+            android:id="@+id/message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="0 messages sent"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
         <!-- Send/Reset Buttons -->
         <LinearLayout

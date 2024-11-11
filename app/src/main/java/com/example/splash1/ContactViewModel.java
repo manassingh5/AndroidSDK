@@ -10,7 +10,7 @@ public class ContactViewModel extends ViewModel {
 
 
     private final MutableLiveData<List<Contact>> selectedContact = new MutableLiveData<>(new ArrayList<>());
-    private final MutableLiveData<Integer> selectedCount = new MutableLiveData<>();
+    private final MutableLiveData<Integer> selectedCount = new MutableLiveData<>(0);
     private MutableLiveData<String> userId = new MutableLiveData<>();
 
     public void setUserId(String id) {
@@ -36,6 +36,31 @@ public class ContactViewModel extends ViewModel {
     public void addContact(List<Contact> contacts) {
         List<Contact> currentContacts = selectedContact.getValue();
         if (currentContacts != null) {
+            for (Contact contact : contacts) {
+                if (!currentContacts.contains(contact)) {
+                    currentContacts.add(contact);
+                }
+            }
+            // Update the LiveData
+            selectedContact.setValue(currentContacts);
+            // Update the count
+            setSelectedCount(currentContacts.size());
+        }
+    }
+
+    public void removeContact(Contact contact) {
+        List<Contact> currentContacts = selectedContact.getValue();
+        if (currentContacts != null && currentContacts.contains(contact)) {
+            currentContacts.remove(contact);
+            selectedContact.setValue(currentContacts);
+            // Update the count
+            setSelectedCount(currentContacts.size());
+        }
+    }
+
+    /*public void addContact(List<Contact> contacts) {
+        List<Contact> currentContacts = selectedContact.getValue();
+        if (currentContacts != null) {
 
             for (Contact contact : contacts) {
                 // Add contact only if it's not already selected
@@ -55,7 +80,7 @@ public class ContactViewModel extends ViewModel {
             currentContacts.remove(contact);
             selectedContact.setValue(currentContacts);
         }
-    }
+    }*/
 
     // Method to clear all selected contacts
     public void clearContacts() {

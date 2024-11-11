@@ -50,4 +50,8 @@ public interface ApiService {
 
     @POST("/api/message/GetMessageByUserId")
     Call<List<Message>> getMessagesByUserId(@Query("userId") String userId);
+
+    @POST("/api/auth/VerifyOTP")
+    Call<ResponseBody> verifyOtp(@Query("userid") String userId,@Body String otp);
+
 }

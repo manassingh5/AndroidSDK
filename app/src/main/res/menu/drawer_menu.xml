@@ -21,6 +21,11 @@
         android:icon="@drawable/ic_chats" />
 
     <item
+        android:id="@+id/nav_send_otp"
+        android:title="Send OTP"
+        android:icon="@drawable/ic_chats" />
+
+    <item
         android:id="@+id/nav_subscriptions"
         android:title="Subscriptions"
         android:icon="@drawable/ic_subscriptions" />
@@ -34,6 +39,8 @@
         android:id="@+id/nav_schedule_message"
         android:title="Schedule Message"
         android:icon="@drawable/ic_metrics" />
+
+
 
 
 
