@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class ContactsFragment extends Fragment {
@@ -182,14 +183,15 @@ public class ContactsFragment extends Fragment {
 
     private void updateSelectedCountText() {
         SelectedContactsCounter.setText("Selected: " + selectedCount);
-    }
+    }  
 
-    private List<Contact> fetchContactsFromPhone() {
+   /* private List<Contact> fetchContactsFromPhone() {
         // Implement logic to fetch contacts from the phone and return a list of Contact objects
         // Each Contact object should have a name and phone number
-
+        String countryCode = "+91";
         List<Contact> contactsList = new ArrayList<>();
-
+        // HashSet to track unique phone numbers
+        HashSet<String> phoneNumbersSet = new HashSet<>();
         ContentResolver contentResolver = getContext().getContentResolver();
         Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
@@ -199,14 +201,76 @@ public class ContactsFragment extends Fragment {
 
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                contactsList.add(new Contact(name, phoneNumber));
+               // contactsList.add(new Contact(name, phoneNumber));
+                // Normalize phone number to avoid duplicates with different formats
+                phoneNumber = phoneNumber.replaceAll("\\s", "").replaceAll("-", "");
+
+                //  Validate phone number length and Only add contact if phone number is not already in the HashSet
+                if (phoneNumber.length() <= 10 && !phoneNumbersSet.contains(phoneNumber)) {
+                    phoneNumbersSet.add(phoneNumber);
+                    String fullPhoneNumber = countryCode + phoneNumber;
+                    contactsList.add(new Contact(name, fullPhoneNumber));
+                }
 
             }
             cursor.close();
         }
         return contactsList;
         //   return new ArrayList<>();
+    }*/
+
+    private List<Contact> fetchContactsFromPhone() {
+    //    String countryCode = "+91"; // Set your desired country code
+        List<Contact> contactsList = new ArrayList<>();
+        HashSet<String> uniquePhoneNumbers = new HashSet<>(); // Tracks unique phone numbers with name
+
+        ContentResolver contentResolver = getContext().getContentResolver();
+        Cursor cursor = null;
+
+        try {
+            cursor = contentResolver.query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+            );
+
+            if (cursor != null && cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    String name = cursor.getString(
+                            cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                    );
+                    String phoneNumber = cursor.getString(
+                            cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    );
+
+                    // Normalize the phone number by removing spaces, dashes, and parentheses
+                    phoneNumber = phoneNumber.replaceAll("\\s", "").replaceAll("-", "")
+                            .replaceAll("\\(", "").replaceAll("\\)", "");
+
+                    // Create a unique key by combining name and phone number
+                    String uniqueKey = name + phoneNumber;
+
+                    // Check if the phone number and name combination is unique
+                    if (!uniquePhoneNumbers.contains(uniqueKey)) {
+                        uniquePhoneNumbers.add(uniqueKey);
+                     //   String fullPhoneNumber = countryCode + phoneNumber;
+                        contactsList.add(new Contact(name, phoneNumber));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error for debugging
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Ensure the cursor is closed
+            }
+        }
+
+        return contactsList;
     }
+
 
     // Handle the result of the permission request
     @Override
